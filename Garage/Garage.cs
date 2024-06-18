@@ -1,5 +1,7 @@
 using System.Collections;
-using System.Globalization;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Garage.Test")]
 
 class Garage<T> : IEnumerable
     where T : IVehicle
