@@ -5,4 +5,10 @@ interface IUI
     uint AskForUint(string query = "", string successFeedback = "");
     Tuple<string, string, uint, string> AskForVehicleDetails();
     UserAction ShowMainMenu(bool garageAlreadyExists = true);
+
+    string AskForRegNr();
+    string AskForVehicleType(bool permitAny = false);
+    string AskForColor();
+
+    uint? AskForWheelCountToSearchFor();
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 
 class Garage<T> : IEnumerable
     where T : IVehicle
@@ -10,13 +11,18 @@ class Garage<T> : IEnumerable
         _storage = new T[capacity];
     }
 
-    public IEnumerator GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         foreach (var item in _storage)
         {
-            yield return item;
+            if (item != null)
+            {
+                yield return item;
+            }
         }
     }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public void PerformOnAll(Action<T> action)
     {
@@ -45,5 +51,39 @@ class Garage<T> : IEnumerable
         }
 
         return idxToRemove;
+    }
+
+    public T? Find(string regNr) =>
+        _storage.FirstOrDefault(v =>
+            v?.RegNr.Equals(regNr, StringComparison.OrdinalIgnoreCase) ?? false
+        );
+
+    internal void Populate(T[] vehicles)
+    {
+        for (int i = 0; i < vehicles.Length; i++)
+        {
+            Add(vehicles[i]);
+        }
+    }
+
+    internal IEnumerable<T?> SearchByProps(string vehicleType, string color, uint? wheelCount)
+    {
+        var firstSelection = vehicleType.Equals("any", StringComparison.OrdinalIgnoreCase)
+            ? _storage
+            : _storage.Where(v =>
+                v != null
+                && v.GetType().Name.Equals(vehicleType, StringComparison.OrdinalIgnoreCase)
+            );
+        var secondSelection = color.Equals("any", StringComparison.OrdinalIgnoreCase)
+            ? firstSelection
+            : firstSelection.Where(v =>
+                v != null && v.Color.Equals(color, StringComparison.OrdinalIgnoreCase)
+            );
+        var thirdSelection =
+            wheelCount == null
+                ? secondSelection
+                : secondSelection.Where(v => v != null && v.WheelCount == wheelCount);
+
+        return thirdSelection;
     }
 }

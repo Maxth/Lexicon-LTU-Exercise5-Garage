@@ -1,3 +1,6 @@
+using System.Threading.Channels;
+using System.Transactions;
+
 class ConsoleUI : IUI
 {
     public UserAction ShowMainMenu(bool garageAlreadyExists = true)
@@ -125,7 +128,7 @@ class ConsoleUI : IUI
         }
     }
 
-    public string AskForVehicleType()
+    public string AskForVehicleType(bool permitAny = false)
     {
         Log(
             "Please choose the type of vehicle:"
@@ -134,6 +137,7 @@ class ConsoleUI : IUI
                 + "\n3. Bus"
                 + "\n4. Airplane"
                 + "\n5. Boat"
+                + (permitAny ? "\n6. Any" : "")
         );
 
         while (true)
@@ -151,6 +155,16 @@ class ConsoleUI : IUI
                     return "Airplane";
                 case "5":
                     return "Boat";
+                case "6":
+                    if (permitAny)
+                    {
+                        return "Any";
+                    }
+                    else
+                    {
+                        Log("Invalid input");
+                    }
+                    break;
                 default:
                     Log("Invalid input");
                     break;
@@ -216,6 +230,50 @@ class ConsoleUI : IUI
             else
             {
                 Log("You need to enter a number, please try again");
+            }
+        }
+    }
+
+    string IUI.AskForColor()
+    {
+        Log("What color do you want to search for? Enter \"Any\" to search for any color.");
+
+        while (true)
+        {
+            var input = Console.ReadLine();
+
+            if (input != null && input.All(l => Char.IsLetter(l)))
+            {
+                return input;
+            }
+            else
+            {
+                Log("Invalid input");
+            }
+        }
+    }
+
+    public uint? AskForWheelCountToSearchFor()
+    {
+        Log(
+            "What is the number of wheels you would like to search for? Enter \"Any\" to search for any number of wheels."
+        );
+
+        while (true)
+        {
+            var input = Console.ReadLine();
+
+            if (uint.TryParse(input, out uint result))
+            {
+                return result;
+            }
+            else if (input != null && input.Equals("any", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+            else
+            {
+                Log("Invalid input");
             }
         }
     }
