@@ -4,7 +4,7 @@ public class GarageTest
 {
     private Garage<IVehicle> garage;
     private Car testCar1 = new Car("lkj123", 4, "red", FuelType.Gasoline);
-    private Car testCar2 = new Car("abc123", 4, "red", FuelType.Gasoline);
+    private Car testCar2 = new Car("abc123", 4, "blue", FuelType.Gasoline);
 
     public GarageTest()
     {
@@ -75,5 +75,19 @@ public class GarageTest
         //Assert
         Assert.Equal(foundVehicle1?.RegNr, testCar1.RegNr);
         Assert.Null(foundVehicle2);
+    }
+
+    [Fact]
+    public void Search_By_Prop_Method_Returns_Correct_Vehicle()
+    {
+        //Arrange
+        garage.Add(testCar1);
+        garage.Add(testCar2);
+
+        //Act
+        var foundVehicles = garage.SearchByProps("Car", "blue", null);
+
+        //Assert
+        Assert.Equal(testCar2.RegNr, foundVehicles?.FirstOrDefault()?.RegNr);
     }
 }

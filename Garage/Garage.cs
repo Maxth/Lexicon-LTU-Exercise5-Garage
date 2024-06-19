@@ -68,7 +68,7 @@ class Garage<T> : IEnumerable
         }
     }
 
-    internal IEnumerable<T?> SearchByProps(string vehicleType, string color, uint? wheelCount)
+    public IEnumerable<T?> SearchByProps(string vehicleType, string color, uint? wheelCount)
     {
         var firstSelection = vehicleType.Equals("any", StringComparison.OrdinalIgnoreCase)
             ? _storage
