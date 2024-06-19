@@ -234,7 +234,7 @@ class ConsoleUI : IUI
         }
     }
 
-    string IUI.AskForColor()
+    public string AskForColorToSearchFor()
     {
         Log("What color do you want to search for? Enter \"Any\" to search for any color.");
 

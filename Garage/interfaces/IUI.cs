@@ -8,7 +8,6 @@ interface IUI
 
     string AskForRegNr();
     string AskForVehicleType(bool permitAny = false);
-    string AskForColor();
-
+    string AskForColorToSearchFor();
     uint? AskForWheelCountToSearchFor();
 }

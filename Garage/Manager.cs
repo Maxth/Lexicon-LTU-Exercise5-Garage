@@ -54,7 +54,7 @@ class Manager
             "You will now be presented with a number of options to search for.\n"
         );
         string vehicleType = _cui.AskForVehicleType(permitAny: true);
-        string color = _cui.AskForColor();
+        string color = _cui.AskForColorToSearchFor();
         uint? wheelCount = _cui.AskForWheelCountToSearchFor();
         _handler.SearchByProps(vehicleType, color, wheelCount);
     }
